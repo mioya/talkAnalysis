@@ -16,16 +16,25 @@ public class MainView extends VerticalLayout {
 
     private final CustomerEditor editor;
 
-    final Grid<Customer> grid;
+    private final UserRepository userRepository;
+
+    //private final UserEditor userEditor;
+
+    final Grid<User> grid;
 
     final TextField filter;
 
     private final Button addNewBtn;
 
-    public MainView(CustomerRepository repo, CustomerEditor editor) {
+    public MainView(CustomerRepository repo, CustomerEditor editor,
+                    UserRepository userRepository) {
         this.repo = repo;
         this.editor = editor;
-        this.grid = new Grid<>(Customer.class);
+
+        this.userRepository = userRepository;
+        //this.userEditor = userEditor;
+
+        this.grid = new Grid<>(User.class);
         this.filter = new TextField();
         this.addNewBtn = new Button("New customer", VaadinIcon.PLUS.create());
 
@@ -34,8 +43,8 @@ public class MainView extends VerticalLayout {
         add(actions, grid, editor);
 
         grid.setHeight("300px");
-        grid.setColumns("id", "firstName", "lastName");
-        grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
+        grid.setColumns("timeStamp", "name", "talk");
+        //grid.getColumnByKey("id").setWidth("50px").setFlexGrow(0);
 
         filter.setPlaceholder("Filter by last name");
 
@@ -46,9 +55,9 @@ public class MainView extends VerticalLayout {
         filter.addValueChangeListener(e -> listCustomers(e.getValue()));
 
         // Connect selected Customer to editor or hide if none is selected
-        grid.asSingleSelect().addValueChangeListener(e -> {
+/*        grid.asSingleSelect().addValueChangeListener(e -> {
             editor.editCustomer(e.getValue());
-        });
+        });*/
 
         // Instantiate and edit new Customer the new button is clicked
         addNewBtn.addClickListener(e -> editor.editCustomer(new Customer("", "")));
@@ -66,10 +75,10 @@ public class MainView extends VerticalLayout {
     // tag::listCustomers[]
     void listCustomers(String filterText) {
         if (StringUtils.isEmpty(filterText)) {
-            grid.setItems(repo.findAll());
+            grid.setItems(userRepository.findAll());
         }
         else {
-            grid.setItems(repo.findByLastNameStartsWithIgnoreCase(filterText));
+            grid.setItems(userRepository.findByName(filterText));
         }
     }
     // end::listCustomers[]

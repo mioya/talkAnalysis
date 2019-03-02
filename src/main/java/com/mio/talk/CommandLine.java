@@ -9,44 +9,44 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.FileInputStream;
 
 @Component
 @CommonsLog
 public class CommandLine {
 
     @Bean
-    public CommandLineRunner loadData(CustomerRepository repository) {
+    public CommandLineRunner loadData(UserRepository userRepository) {
+        try {
+            String filePath = "/Users/mio/1.txt";
+            FileInputStream fileStream;
+            fileStream = new FileInputStream(filePath);
+            byte[] readBuffer = new byte[fileStream.available()];
+            Integer index = 0;
+            while (fileStream.read(readBuffer) != -1) {
+                String full = new String(readBuffer);
+                for (String line : full.split("\\n")) {
+                    index = index + 1;
+                    if (index > 7 && line.startsWith("20")
+                            && line.contains(",")) {
+                        String date = line.substring(0, line.indexOf(","));
+                        String nameConv = line.substring(line.indexOf(",") + 2, line.length() - 1);
+                        if(nameConv.indexOf(":") != -1){
+                            String name = nameConv.substring(0, nameConv.indexOf(":")-1);
+                            String talk = nameConv.substring(nameConv.indexOf(":")+2);
+                            userRepository.save(new User(name, date, talk));
+                        }
+                    }
+                }
+            }
+            fileStream.close();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
         return (args) -> {
-            // save a couple of customers
-            repository.save(new Customer("Jack", "Bauer"));
-            repository.save(new Customer("Chloe", "O'Brian"));
-            repository.save(new Customer("Kim", "Bauer"));
-            repository.save(new Customer("David", "Palmer"));
-            repository.save(new Customer("Michelle", "Dessler"));
 
-            // fetch all customers
-            log.info("Customers found with findAll():");
-            log.info("-------------------------------");
-            for (Customer customer : repository.findAll()) {
-                log.info(customer.toString());
-            }
-            log.info("");
-
-            // fetch an individual customer by ID
-            Customer customer = repository.findById(1L).get();
-            log.info("Customer found with findOne(1L):");
-            log.info("--------------------------------");
-            log.info(customer.toString());
-            log.info("");
-
-            // fetch customers by last name
-            log.info("Customer found with findByLastNameStartsWithIgnoreCase('Bauer'):");
-            log.info("--------------------------------------------");
-            for (Customer bauer : repository
-                    .findByLastNameStartsWithIgnoreCase("Bauer")) {
-                log.info(bauer.toString());
-            }
-            log.info("");
         };
     }
+
 }

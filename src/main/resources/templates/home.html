@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>순서</th>
+            <th>시간</th>
+            <th>이름</th>
+            <th>대화</th>
+        </tr>
+        <tr th:each="user,iterStat : ${users}" >
+            <td th:text="${iterStat}"></td>
+            <td th:text="${user.timeStamp}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.talk}"></td>
+        </tr>
+    </table>
+</body>
+</html>

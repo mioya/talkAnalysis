@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,11 +20,12 @@ public class User {
 
     private String name;
 
-    private String timeStamp;
+    private LocalDateTime timeStamp;
 
+    @Lob
     private String talk;
 
-    public User(String name, String timeStamp, String talk){
+    public User(String name, LocalDateTime timeStamp, String talk){
         this.name = name;
         this.timeStamp = timeStamp;
         this.talk = talk;

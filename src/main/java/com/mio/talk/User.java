@@ -10,18 +10,21 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
-public class Customer {
+public class User {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String firstName;
+    private String name;
 
-    private String lastName;
+    private String timeStamp;
 
-    public Customer(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    private String talk;
+
+    public User(String name, String timeStamp, String talk){
+        this.name = name;
+        this.timeStamp = timeStamp;
+        this.talk = talk;
     }
 }

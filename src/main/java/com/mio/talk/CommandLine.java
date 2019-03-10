@@ -11,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -49,12 +51,14 @@ public class CommandLine {
                     }
                 }
             }
+            LocalDateTime date = LocalDateTime.parse("20190211", DateTimeFormatter.ofPattern("yyyyMMdd"));
+            LocalDateTime date1 = LocalDateTime.parse("20190213", DateTimeFormatter.ofPattern("yyyyMMdd"));
 
 
             List<String> list = userRepository.findNameGroupByName();
             System.out.println(list);
-
-
+            List<User> users = userRepository.findAllByTimeStampBetween(date,date1);
+            System.out.println(users);
             fileStream.close();
         } catch (Exception e) {
             e.getStackTrace();

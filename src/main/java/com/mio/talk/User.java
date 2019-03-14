@@ -25,6 +25,7 @@ public class User {
     @Lob
     private String talk;
 
+
     public User(String name, LocalDateTime timeStamp, String talk){
         this.name = name;
         this.timeStamp = timeStamp;

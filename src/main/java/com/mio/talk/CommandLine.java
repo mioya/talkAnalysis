@@ -25,7 +25,8 @@ public class CommandLine {
     @Bean
     public CommandLineRunner loadData(UserRepository userRepository) {
         try {
-            String filePath = "/Users/mio/1.txt";
+            //String filePath = "/Users/mio/1.txt";
+            String filePath = "C:\\Users\\mio\\Downloads\\2.txt";
             FileInputStream fileStream;
             fileStream = new FileInputStream(filePath);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 a KK:mm");

@@ -20,7 +20,12 @@ public class UserController {
         LocalDateTime date1 = LocalDateTime.now();
 
         List<User> users = userRepository.findAllByTimeStampBetween(date, date1);
-        System.out.println(users);
+
+        List<String> names = userRepository.findNameGroupByName();
+        for(String name : names){
+
+        }
+
         model.addAttribute("users", userRepository.findAll());
         return "/index";
     }

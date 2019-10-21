@@ -17,6 +17,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @CommonsLog
@@ -26,7 +29,7 @@ public class CommandLine {
     public CommandLineRunner loadData(UserRepository userRepository) {
         try {
             //String filePath = "/Users/mio/1.txt";
-            String filePath = "C:\\Users\\mio\\Documents\\test\\44.txt";
+            String filePath = "C:\\Users\\mio\\Documents\\test\\6.txt";
             FileInputStream fileStream;
             fileStream = new FileInputStream(filePath);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 a KK:mm");
@@ -56,6 +59,21 @@ public class CommandLine {
         } catch (Exception e) {
             e.getStackTrace();
         }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.of(now.getYear(), now.getMonth(), 1, 00, 00);
+
+        List<User> monthUsers = userRepository.findAllByTimeStampBetween(date, now);
+
+        HomeResponseVo homeResponseVo = new HomeResponseVo();
+        homeResponseVo.setMonthTalk(monthUsers.size());
+
+        Map<String, List<User>> userMonthTalk = monthUsers.stream()
+                .collect(Collectors.groupingBy(User::getName));
+
+        for (String userMonth : userMonthTalk.keySet()) {
+        }
+
         return (args) -> {
         };
     }

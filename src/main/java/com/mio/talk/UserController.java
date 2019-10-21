@@ -31,14 +31,13 @@ public class UserController {
         homeResponseVo.setMonthTalk(monthUsers.size());
 
         Set<String> username = monthUsers.stream().collect(Collectors.groupingBy(User::getName)).keySet();
+        Map<String, List<User>> userMonthTalk = monthUsers.stream()
+                .collect(Collectors.groupingBy(User::getName));
 
-        Map<String, Long> nameTalkCount = new HashMap<>();
-
-        for(String name : username){
-            nameTalkCount.put(name, monthUsers.stream().filter(u -> u.getName().equals(name)).count());
+        for (String userMonth : userMonthTalk.keySet()) {
+            log.debug("userMonth:" + userMonth + "||" + userMonthTalk.get(userMonth).size());
         }
-        //Map<String, Long> names = userRepository.findNameGroupByName(date, now);
-
+        System.out.println(userMonthTalk);
         model.addAttribute("response", homeResponseVo);
         return "/index";
     }

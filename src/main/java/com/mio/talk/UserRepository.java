@@ -11,7 +11,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByName(String name);
 
-    List<User> findAllByTimeStampBetween(LocalDateTime startDate, LocalDateTime finishDate);
+    List<User> findByTimeStampBetween(LocalDateTime startDate, LocalDateTime finishDate);
+
+    List<User> findAll();
 
     @Query(value = "SELECT u FROM User u " +
             "where u.timeStamp >= 1" +
